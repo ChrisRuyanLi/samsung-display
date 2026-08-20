@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <title>Samsung Display</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #screen {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+    </style>
+</head>
+
+<body>
+
+<img id="screen">
+
+<script>
+    /*
+     * 加时间参数，防止电视缓存旧的 pages.js
+     */
+    document.write(
+        '<script src="pages.js?v=' +
+        new Date().getTime() +
+        '"><\/script>'
+    );
+</script>
+
+<script>
+(function () {
+
+    var currentPage = 0;
+
+    var displayTime = 10000;
+
+    var screen = document.getElementById("screen");
+
+    function showPage() {
+
+        if (typeof PAGES === "undefined" || PAGES.length === 0) {
+            return;
+        }
+
+        screen.src =
+            PAGES[currentPage] +
+            "?v=" +
+            new Date().getTime();
+    }
+
+    function nextPage() {
+
+        currentPage++;
+
+        if (currentPage >= PAGES.length) {
+            currentPage = 0;
+        }
+
+        showPage();
+    }
+
+    showPage();
+
+    setInterval(
+        nextPage,
+        displayTime
+    );
+
+    /*
+     * 每5分钟重新载入整个网页
+     * 用来检查 GitHub 上有没有新版 PDF
+     */
+    setTimeout(function () {
+
+        location.reload(true);
+
+    }, 300000);
+
+})();
+</script>
+
+</body>
+</html>
